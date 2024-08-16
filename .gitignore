@@ -1,2 +1,12 @@
+# IDE
 .idea/
+
+# Packages
 node_modules/
+
+# Ignore test-related files
+/coverage.data
+/coverage/
+
+# Files
+package-lock.json

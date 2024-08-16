@@ -1,9 +1,15 @@
 {
   "name": "studio-merger",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Multi-Source MediaStream, Video, Image, and Audio merger",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "tsup",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,5 +33,15 @@
   "bugs": {
     "url": "https://github.com/sajadjafari/media-merger/issues"
   },
-  "homepage": "https://github.com/sajadjafari/media-merger#readme"
+  "homepage": "https://github.com/sajadjafari/media-merger#readme",
+  "dependencies": {
+    "audio-merger": "^1.1.0",
+    "nanoid": "^5.0.7",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "tsup": "^8.2.4",
+    "typescript": "^5.5.4"
+  }
 }
