@@ -29,7 +29,7 @@ export type MergerSource = {
     position?: MergerPosition;
 }
 
-type SourceItem = {
+export type SourceItem = {
     id: string;
     index: number;
     source: MediaStream | HTMLImageElement | HTMLVideoElement;
