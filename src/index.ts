@@ -163,7 +163,7 @@ export default class StudioMerger {
         this.result = this.canvas.captureStream(this.fps);
     }
 
-    getPosition(position?: MergerPosition): MergerPosition {
+    private getPosition(position?: MergerPosition): MergerPosition {
         if (position) return position;
         const size = this.sources.size + 1;
         const gridSize = Math.ceil(Math.sqrt(size));
@@ -185,7 +185,7 @@ export default class StudioMerger {
         return {...axis(this.sources.size), w, h};
     }
 
-    translatePositionToVertices = (position?: MergerPosition): Float32Array => {
+    private translatePositionToVertices = (position?: MergerPosition): Float32Array => {
         const {width, height} = this.canvas;
         const {x: posX, y: posY, w: posW, h: posH} = this.getPosition(position);
         const pixelX = 2 / width;
@@ -196,17 +196,6 @@ export default class StudioMerger {
         const y2 = pixelY * (height - (posY + posH)) - 1;
         return new Float32Array([x1, y1, x1, y2, x2, y1, x2, y2]); // topLeft (2), bottomLeft (2), topRight (2), bottomRight (2)
     };
-
-    updatePosition(mediaStream: MediaStream | string, position: MergerPosition) {
-        const id = typeof mediaStream === 'string' ? mediaStream : mediaStream.id;
-        const stream = this.sources.get(id);
-        if (stream) {
-            this.sources.set(id, {
-                ...stream,
-                vertices: this.translatePositionToVertices(position),
-            });
-        }
-    }
 
     private createVideoElement(stream: MediaStream): HTMLVideoElement {
         const video = document.createElement('video');
@@ -222,7 +211,7 @@ export default class StudioMerger {
         return video;
     }
 
-    draw() {
+    private draw() {
         try {
             this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
             this.gl.clearDepth(this.gl.getParameter(this.gl.DEPTH_CLEAR_VALUE));
@@ -257,7 +246,7 @@ export default class StudioMerger {
         }
     }
 
-    start() {
+    private start() {
         this.isRendering = true;
         this.rxIntervalSub = interval(1000 / this.fps).subscribe(() => this.draw());
     }
@@ -343,6 +332,16 @@ export default class StudioMerger {
         if (stream) {
             this.sources.set(id, {...stream, index});
             this.sortSources();
+        }
+    }
+
+    updatePosition(id: string, position: MergerPosition) {
+        const source = this.sources.get(id);
+        if (source) {
+            this.sources.set(id, {
+                ...source,
+                vertices: this.translatePositionToVertices(position),
+            });
         }
     }
 
